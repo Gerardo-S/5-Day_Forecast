@@ -79,8 +79,29 @@ function updatePage(cityData) {
     }).then(function (uvData) {
         console.log(uvData);
         console.log(uvData.value);
+        // A uv index of 3-5 means moderate risk color yellow
+        // A uv index of 0-2 is low risk color green 
+        // A uv index of 6-7 is high color orange 
+        // A uv index of 8-10 is very high color red 
+        var indexDiv = $("<div>");
+        if (uvData.value <= 2){
 
-        $(".UVindex").text("UV Index: " + uvData.value );
+            $("#UVindex").text(uvData.value).css("background-color", "green");
+        }
+
+        else if (uvData.value >=3 && uvData.value <=5){
+
+            $("#UVindex").text(uvData.value ).css("background-color", "yellow");
+        }
+        else if (uvData.value >=6 && uvData.value <=7){
+
+            $("#UVindex").text( uvData.value ).css("background-color", "orange");
+        }
+        else if (uvData.value >=8 && uvData.value <=10){
+
+            $("#UVindex").text(uvData.value ).css("background-color", "red");
+        }
+       
     });
     
     
@@ -103,8 +124,9 @@ $("#run-search").on("click", function (event) {
     // (in addition to clicks). Prevents the page from reloading on form submit.
     event.preventDefault();
 
-
+   $("#weather").css("visibility", "visible");
     // Build the query URL for the ajax request to the NYT API
+
     var queryURL = buildQueryURL();
     
 
