@@ -15,11 +15,7 @@ function buildQueryURL() {
         .val()
         .toLowerCase()
         .trim();
-    console.log()
-
-    console.log("---------------\nURL: " + queryURL + "\n---------------");
-    console.log($.param(queryParams));
-    console.log(queryURL + $.param(queryParams));
+   
     return queryURL + $.param(queryParams);
 }
 
@@ -31,7 +27,7 @@ function updatePage(cityData) {
 
     var iconUrl =
         "https://openweathermap.org/img/wn/" + cityData.list[0].weather[0].icon + "@2x.png";
-    console.log(cityData);
+   
 
     var cityName = cityData.city.name;
     var dateEpochts = cityData.list[0].dt * 1000;
@@ -40,7 +36,7 @@ function updatePage(cityData) {
     var day = date.getDate();
     var year = date.getFullYear();
     var theDate = "(" + month + "/" + day + "/" + year + ")";
-    console.log(theDate);
+    
 
     var iconImg = $("#icon1").attr({
         src: iconUrl,
@@ -55,21 +51,20 @@ function updatePage(cityData) {
 
     var lat = cityData.city.coord.lat;
     var lon = cityData.city.coord.lon;
-    console.log(lat);
+    
     // // create url for uv index query
     var uvQueryUrl = "https://api.openweathermap.org/data/2.5/uvi?";
     var uvQueryParams = { "appid": "8944df8780ba70b0913552b31d4a5c44" };
     uvQueryParams.lat = lat;
     uvQueryParams.lon = lon;
     var uvQueryUrl = uvQueryUrl + $.param(uvQueryParams);
-    console.log(uvQueryUrl);
+   
 
     // Day 2 -------------------------------------------------------------------------------------------
 
     var iconUrl2 =
         "https://openweathermap.org/img/wn/" + cityData.list[1].weather[0].icon + "@2x.png";
-    console.log("------------------------------------");
-    console.log(iconUrl2);
+    
 
     var dateEpochts2 = cityData.list[1].dt * 1000;
     var date2 = new Date(dateEpochts2);
@@ -77,7 +72,6 @@ function updatePage(cityData) {
     var day2 = date2.getDate();
 
     var theDate2 = month2 + "/" + day2 + "/" + year;
-    console.log(theDate2);
 
 
     $("#icon2").attr({
@@ -93,8 +87,7 @@ function updatePage(cityData) {
 
     var iconUrl3 =
         "https://openweathermap.org/img/wn/" + cityData.list[2].weather[0].icon + "@2x.png";
-    console.log("------------------------------------");
-    console.log(iconUrl3);
+
 
     var dateEpochts3 = cityData.list[2].dt * 1000;
     var date3 = new Date(dateEpochts3);
@@ -116,8 +109,6 @@ function updatePage(cityData) {
     // Day 4----------------------------------------------------------------------------------------------
     var iconUrl4 =
         "https://openweathermap.org/img/wn/" + cityData.list[3].weather[0].icon + "@2x.png";
-    console.log("------------------------------------");
-    console.log(iconUrl4);
 
     var dateEpochts4 = cityData.list[3].dt * 1000;
     var date4 = new Date(dateEpochts4);
@@ -139,8 +130,6 @@ function updatePage(cityData) {
 
 var iconUrl5 =
         "https://openweathermap.org/img/wn/" + cityData.list[4].weather[0].icon + "@2x.png";
-    console.log("------------------------------------");
-    console.log(iconUrl5);
 
     var dateEpochts5 = cityData.list[4].dt * 1000;
     var date5 = new Date(dateEpochts5);
@@ -165,8 +154,7 @@ var iconUrl5 =
         url: uvQueryUrl,
         method: "GET"
     }).then(function (uvData) {
-        console.log(uvData);
-        console.log(uvData.value);
+       
         // A uv index of 3-5 means moderate risk color yellow
         // A uv index of 0-2 is low risk color green 
         // A uv index of 6-7 is high color orange 
@@ -180,7 +168,7 @@ var iconUrl5 =
 
         else if (uvData.value >= 3 && uvData.value <= 5) {
 
-            $("#UVindex").text(uvData.value).css("background-color", "yellow");
+            $("#UVindex").text(uvData.value).css("background-color", "yellow").css("color", "black");
         }
         else if (uvData.value >= 6 && uvData.value <= 7) {
 
@@ -205,6 +193,8 @@ var iconUrl5 =
 $("#run-search").on("click", function (event) {
 
     event.preventDefault();
+
+
     // Update list based on user input
     var userInput = $("#search4City").val();
     var newList = $("<li>").addClass("list-group-item");
