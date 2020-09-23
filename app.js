@@ -23,7 +23,13 @@ function buildQueryURL() {
     return queryURL + $.param(queryParams);
 }
 
+
+    
+
+
 // ======================================================================================================
+
+
 
 // Make Page Dynamic 
 // ======================================================================================================
@@ -57,7 +63,32 @@ function updatePage(cityData) {
     $(".wind").text("Wind Speed: " + cityData.wind.speed + " mph");
     $("h3").append(iconImg);
 
+    var lat = cityData.coord.lat;
+    var lon = cityData.coord.lon;
+    // create url for uv index query
+    var uvQueryUrl = "https://api.openweathermap.org/data/2.5/uvi?";
+    var uvQueryParams = { "appid": "8944df8780ba70b0913552b31d4a5c44" };
+    uvQueryParams.lat = lat;
+    uvQueryParams.lon = lon;
+    var uvQueryUrl = uvQueryUrl  + $.param(uvQueryParams);
+    console.log(uvQueryUrl);
 
+    $.ajax({
+        url: uvQueryUrl,
+        method: "GET"
+    }).then(function (uvData) {
+        console.log(uvData);
+        console.log(uvData.value);
+
+        $(".UVindex").text("UV Index: " + uvData.value );
+    });
+    
+    
+
+
+
+
+    
 };
 
 
@@ -75,6 +106,7 @@ $("#run-search").on("click", function (event) {
 
     // Build the query URL for the ajax request to the NYT API
     var queryURL = buildQueryURL();
+    
 
     // Make the AJAX request to the API - GETs the JSON data at the queryURL.
     // The data then gets passed as an argument to the updatePage function
@@ -82,5 +114,9 @@ $("#run-search").on("click", function (event) {
         url: queryURL,
         method: "GET"
     }).then(updatePage);
+
+   
+
+
 });
 
