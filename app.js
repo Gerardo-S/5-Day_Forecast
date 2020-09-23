@@ -2,7 +2,7 @@
 // ================================================================================================
 // queryURL is the url we'll use to query the API
 function buildQueryURL() {
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?&units=imperial&";
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?&cnt=5&units=imperial&";
     // q={city name}&appid={API key}"
 
 
@@ -24,48 +24,43 @@ function buildQueryURL() {
 }
 
 
-    
 
-
-// ======================================================================================================
-
-
-
-// Make Page Dynamic 
+// Make Page Dynamic Day 1
 // ======================================================================================================
 function updatePage(cityData) {
 
     var iconUrl =
-        "https://openweathermap.org/img/wn/" + cityData.weather[0].icon + "@2x.png";
+        "https://openweathermap.org/img/wn/" + cityData.list[0].weather[0].icon + "@2x.png";
     console.log(cityData);
     console.log("------------------------------------");
     console.log(iconUrl);
 
 
-    var cityName = cityData.name;
+    var cityName = cityData.city.name;
     console.log(cityName);
-    var dateEpochts = cityData.dt * 1000;
+    var dateEpochts = cityData.list[0].dt * 1000;
     var date = new Date(dateEpochts);
     var month = date.getMonth();
     var day = date.getDate();
     var year = date.getFullYear();
     var theDate = "(" + month + "/" + day + "/" + year + ")";
-    console.log("-----------CurrentDate-------------")
-    console.log(theDate);
+    
+    
     var iconImg = $("#icon1").attr({
         src: iconUrl,
-        alt: cityData.weather[0].description,
+        alt: cityData.list[0].weather[0].description,
     });
     // Text to be updated 
     $("h3").text(cityName + " " + theDate);
-    $(".temp").text("Temperature: " + cityData.main.temp + "°");
-    $(".humidity").text("Humidity: " + cityData.main.humidity + " %");
-    $(".wind").text("Wind Speed: " + cityData.wind.speed + " mph");
+    $(".temp").text("Temperature " + cityData.list[0].main.temp + "°");
+    $(".humidity").text("Humidity: " + cityData.list[0].main.humidity + "%");
+    $(".wind").text("Wind Speed: " + cityData.list[0].wind.speed + " mph");
     $("h3").append(iconImg);
 
-    var lat = cityData.coord.lat;
-    var lon = cityData.coord.lon;
-    // create url for uv index query
+    var lat = cityData.city.coord.lat;
+    var lon = cityData.city.coord.lon;
+    console.log(lat);
+    // // create url for uv index query
     var uvQueryUrl = "https://api.openweathermap.org/data/2.5/uvi?";
     var uvQueryParams = { "appid": "8944df8780ba70b0913552b31d4a5c44" };
     uvQueryParams.lat = lat;
@@ -103,11 +98,6 @@ function updatePage(cityData) {
         }
        
     });
-    
-    
-
-
-
 
     
 };
@@ -119,12 +109,18 @@ function updatePage(cityData) {
 // ======================================================================================================
 // .on("click") function associated with the Search Button
 $("#run-search").on("click", function (event) {
-    // This line allows us to take advantage of the HTML "submit" property
-    // This way we can hit enter on the keyboard and it registers the search
-    // (in addition to clicks). Prevents the page from reloading on form submit.
+    
     event.preventDefault();
-
+    // Update list based on user input
+    var userInput= $("#search4City").val();
+    var newList=$("<li>").addClass("list-group-item");
+    $("#searchHistory").prepend(newList);
+    newList.text(userInput);
+    
+    // Update page when user hits the search button;
    $("#weather").css("visibility", "visible");
+
+   
     // Build the query URL for the ajax request to the NYT API
 
     var queryURL = buildQueryURL();
@@ -136,9 +132,6 @@ $("#run-search").on("click", function (event) {
         url: queryURL,
         method: "GET"
     }).then(updatePage);
-
-   
-
 
 });
 
