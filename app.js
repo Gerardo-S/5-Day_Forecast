@@ -58,6 +58,41 @@ function updatePage(cityData) {
     uvQueryParams.lat = lat;
     uvQueryParams.lon = lon;
     var uvQueryUrl = uvQueryUrl + $.param(uvQueryParams);
+
+    // Uv index only for Day 1--------------------------------------------------------------------------------
+    $.ajax({
+        url: uvQueryUrl,
+        method: "GET"
+    }).then(function (uvData) {
+       
+        console.log(uvData);
+        console.log($("#UVindex").text());
+        // A uv index of 3-5 means moderate risk color yellow
+        // A uv index of 0-2 is low risk color green 
+        // A uv index of 6-7 is high color orange 
+        // A uv index of 8-10 is very high color red 
+        
+            
+        if (uvData.value <= 2) {
+
+            $("#UVindex").text(uvData.value).css("background-color", "green");
+        }
+
+        else if (uvData.value >= 3 && uvData.value <= 5) {
+
+            $("#UVindex").text(uvData.value).css("background-color", "yellow").css("color", "black");
+        }
+        else if (uvData.value >= 6 && uvData.value <= 7) {
+
+            $("#UVindex").text(uvData.value).css("background-color", "orange");
+        }
+        else if (uvData.value >= 8 && uvData.value <= 10) {
+
+            $("#UVindex").text(uvData.value).css("background-color", "red");
+        }
+
+    });
+
    
 
     // Day 2 -------------------------------------------------------------------------------------------
@@ -148,38 +183,8 @@ var iconUrl5 =
     $("#temp5").text("Temp: " + cityData.list[4].main.temp + "°");
     $("#humidity5").text("Humidity: " + cityData.list[4].main.humidity + "%");
 
-
-    // Uv index only for Day 1--------------------------------------------------------------------------------
-    $.ajax({
-        url: uvQueryUrl,
-        method: "GET"
-    }).then(function (uvData) {
-       
-        // A uv index of 3-5 means moderate risk color yellow
-        // A uv index of 0-2 is low risk color green 
-        // A uv index of 6-7 is high color orange 
-        // A uv index of 8-10 is very high color red 
-
-
-        if (uvData.value <= 2) {
-
-            $("#UVindex").text(uvData.value).css("background-color", "green");
-        }
-
-        else if (uvData.value >= 3 && uvData.value <= 5) {
-
-            $("#UVindex").text(uvData.value).css("background-color", "yellow").css("color", "black");
-        }
-        else if (uvData.value >= 6 && uvData.value <= 7) {
-
-            $("#UVindex").text(uvData.value).css("background-color", "orange");
-        }
-        else if (uvData.value >= 8 && uvData.value <= 10) {
-
-            $("#UVindex").text(uvData.value).css("background-color", "red");
-        }
-
-    });
+    
+    
 
 
 };

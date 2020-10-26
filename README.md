@@ -26,4 +26,7 @@ Link to deployed page:<br>
 
 <a href="https://gerardo-s.github.io/5-Day_Forecast/">https://gerardo-s.github.io/5-Day_Forecast/</a>
 
+License <br>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
